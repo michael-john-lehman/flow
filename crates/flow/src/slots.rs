@@ -1,25 +1,24 @@
 use crate::error::*;
-use std::any::Any;
+use crate::variable::Variable;
+use std::sync::Arc;
+use tokio::sync::{Mutex, MutexGuard};
 
-pub struct Slots(Vec<Option<Box<dyn Any + Send + Sync + 'static>>>);
+pub type SlotValue = Option<Box<dyn Variable>>;
+
+#[derive(Clone)]
+pub struct Slots(Arc<Vec<Mutex<SlotValue>>>);
 
 impl Slots {
-    pub fn initalize(size: usize) -> Self {
-        Self((0..size).map(|_| None).collect())
+    pub fn intialize(size: usize) -> Self {
+        Self(Arc::new((0..size).map(|_| Mutex::new(None)).collect()))
     }
 
-    pub fn get<T: Any + Send + Sync + 'static>(&self, position: usize) -> Result<&T, RuntimeError> {
-        self.0.get(position)
-            .ok_or(RuntimeError::invalid_slot())?
-            .as_ref()
-            .ok_or(RuntimeError::null())?
-            .downcast_ref::<T>()
-            .ok_or(RuntimeError::downcast())
-    }
-
-    pub fn put<T: Any + Send + Sync + 'static>(&mut self, value: T, position: usize) -> Result<(), RuntimeError> {
-        let ptr = self.0.get_mut(position).ok_or(RuntimeError::invalid_slot())?;
-        *ptr = Some(Box::new(value));
-        Ok(())
+    pub async fn acquire(&self, address: usize) -> Result<MutexGuard<'_, SlotValue>, RuntimeError> {
+        Ok(self
+            .0
+            .get(address)
+            .ok_or(RuntimeError::invalid_slot_address())?
+            .lock()
+            .await)
     }
 }

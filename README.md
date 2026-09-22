@@ -30,6 +30,8 @@ Below are the important terms used within this project.
 
 **Instruction Group**: A subset of instructions within a procedure that may be evaluated at any time. 
 
+**Variable**: ...
+
 **Context**: An immutable map that is provided to each instruction in a procedure. It is created for each procedure call and therefore can allow controlled access to more complex input. For example, the body of a HTTP request.
 
 **Slots**: A mutable array that stores the inputs and outputs for each instruction in a procedure. 
