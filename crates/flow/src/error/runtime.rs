@@ -1,32 +1,14 @@
-use std::any::TypeId;
 use std::error::Error;
 use std::fmt::{Debug, Display};
 
 pub enum RuntimeError {
-    /// Failed to downcast
-    Downcast {
-        expected: (&'static str, TypeId),
-        actual: (&'static str, TypeId),
-    },
-    /// Something that should not happen, happened
-    Unexpected {
-        detail: &'static str,
-    },
-    /// Attempted to access address outside bound
-    InvalidSlotAdddress,
+    /// Attempted to access invalid slot address
+    InvalidAddress
 }
 
 impl RuntimeError {
-    pub const fn downcast(expected: (&'static str, TypeId), actual: (&'static str, TypeId)) -> Self {
-        Self::Downcast { expected, actual }
-    }
-
-    pub const fn unexpected(detail: &'static str) -> Self {
-        Self::Unexpected { detail }
-    }
-
-    pub const fn invalid_slot_address() -> Self {
-        Self::InvalidSlotAdddress
+    pub const fn invalid_address() -> Self {
+        Self::InvalidAddress
     }
 }
 
