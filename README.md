@@ -10,6 +10,32 @@ Within organisations issues often arise due to miscommunications between departm
 
 ### Abstract
 
+<div align="center">
+    <img src="./assets/function-notation-example.svg"/>
+</div>
+
+Example for instruction notation. A instruction may only have a single branch going into it. (multiple input branches would imply implict duplicate) The parameters are declared to reference a variable. Only variables in scope may be selected (in scope means compiler process can ensure that the variable has at least been initialized by the time it's called).
+
+<div align="center">
+    <img src="./assets/merger-notation-example.svg"/>
+</div>
+
+Example for merger notation. Once any task reaches a merge point, it sends a data over a channel to inform a manager task to queue the output task. When both inputs to the merge exist (assigned by pairs) the output task is scheduled.
+
+<div align="center">
+    <img src="./assets/splitter-notation-example.svg"/>
+</div>
+
+A splitter is much more simple in comparision, simple once a task reaches a split point, it schedules two new tasks for both L and R.
+
+<div align="center">
+    <img src="./assets/gate-notation-example.svg"/>
+</div>
+
+Example for gate notation. Gate's can be used to inform that compiler that we should wait another task to reach some point before continuing. (Repeat behaviour should be configurable, i.e. if gate should be considered oneshot or should await to task cross it.)
+
+### Abstract (Not really accurate for new model)
+
 Below is an example of a flowchart used for programming. It specifies an entry point and exit, along with notation for function calls and conditional branching logic.
 
 <div align="center"><img src="./assets/flow1.svg" width="600px"/></div>
